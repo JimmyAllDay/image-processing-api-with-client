@@ -1,0 +1,15 @@
+$theme-colors: (
+  "info": #81c581,
+  "danger": pink,
+  "primary": lightgray,
+  "dark": rgb(26, 26, 26),
+  "light": white,
+);
+
+p {
+  font-size: 0.7em;
+}
+$box-shadow: 0 0.5rem 1rem rgba(black, 0.35);
+// import bootstrap stylesheet
+
+@import "~bootstrap/scss/bootstrap";
