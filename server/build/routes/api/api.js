@@ -17,49 +17,33 @@ const routes = express_1.default.Router();
 const app = (0, express_1.default)();
 const path = require("path");
 const fs = require("fs");
-const fsPromises = require("fs").promises;
-const resize = require("../../modules/resize");
+const processImage = require("../../modules/processImage");
+const resize = processImage.resize;
+const cleanUpImage = processImage.cleanUpImage;
 routes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const image = req.query.name;
     const widthString = req.query.width;
     const heightString = req.query.height;
     const widthNum = Number(widthString);
     const heightNum = Number(heightString);
-    // Get path to requested image in client
-    const localImage = path.join(__dirname, "../../images", `${image}.jpg`);
-    // get path to rquested image in thumb folder
-    const newImage = path.join(__dirname, "../../thumb", `${image}_${widthNum}_${heightNum}.jpg`);
-    // path to image in server folder
+    // Get path to image in server folder
     const resizedImage = path.join(__dirname, "../../", `${image}_${widthNum}_${heightNum}.jpg`);
-    if (fs.existsSync(newImage)) {
-        console.log(`Image exists, sending: ${newImage}`);
-        res.sendFile(newImage);
+    // Get path to image in images folder
+    const localImage = path.join(__dirname, "../../images", `${image}.jpg`);
+    // Get path to image in thumb folder
+    const thumbImage = path.join(__dirname, "../../thumb", `${image}_${widthNum}_${heightNum}.jpg`);
+    if (fs.existsSync(thumbImage)) {
+        res.sendFile(thumbImage);
     }
     else {
-        console.log(`Image created, sending: ${newImage}`);
         try {
             yield resize(localImage, widthNum, heightNum, image);
-            yield fsPromises
-                .copyFile(resizedImage, newImage)
-                .then(function () {
-                fs.unlink(resizedImage, (err) => {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    }
-                    else {
-                        console.log(`deleted file: ${resizedImage}`);
-                    }
-                });
-            })
-                .catch(function (error) {
-                console.log(error);
-            });
+            yield cleanUpImage(resizedImage, thumbImage);
         }
         catch (err) {
             console.log(err);
         }
-        res.sendFile(newImage);
+        res.sendFile(thumbImage);
     }
 }));
 exports.default = routes;

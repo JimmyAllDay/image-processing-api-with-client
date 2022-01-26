@@ -16,46 +16,74 @@ function App() {
   // TODO: Add CSS slide transition, using Transition Group
 
   const [selectedFiles, setSelectedFiles] = useState(null);
+  const [sizeData, setSizeData] = useState(null);
+  const [userMessage, setUserMessage] = useState(null);
 
   const handleImageSelect = (e) => {
     setSelectedFiles(e.target.files);
   };
 
-  const formSubmit = () => {
+  const handleSizeSelect = (e) => {
+    setSizeData(e.target.value);
+  };
+
+  const statusMessage = (message) => {
+    setUserMessage(message);
+    setTimeout(() => {
+      setUserMessage(null);
+    }, 3000);
+    return message;
+  };
+
+  const formSubmit = (e) => {
+    e.preventDefault();
     const data = new FormData();
     data.append("file", selectedFiles);
-    let url = "http://localhost:3001/sendimage";
-
-    axios
-      .post(url, data)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+    data.append("dimensions", sizeData);
+    const url = "http://localhost:5000/sendimage";
+    if (selectedFiles && sizeData) {
+      statusMessage("Sending image");
+      axios
+        .post(url, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    } else if (selectedFiles && !sizeData) {
+      return statusMessage("Please choose an image size");
+    } else if (sizeData && !selectedFiles) {
+      return statusMessage("Please select an image");
+    } else {
+      return statusMessage("Please select an image and an image size");
+    }
   };
 
   return (
-    console.log(selectedFiles),
-    (
-      <Container fluid className="p-0 h-100 d-flex flex-column">
-        <Navigation />
+    <Container fluid className="p-0 h-100 d-flex flex-column">
+      <Navigation />
 
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <Upload
-                handleImageSelect={handleImageSelect}
-                formSubmit={formSubmit}
-              />
-            }
-          />
-          <Route exact path="/display" element={<Display />} />
-        </Routes>
-        <Footer />
-      </Container>
-    )
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <Upload
+              userMessage={userMessage}
+              handleImageSelect={handleImageSelect}
+              handleSizeSelect={handleSizeSelect}
+              formSubmit={formSubmit}
+              selectedFiles={selectedFiles}
+            />
+          }
+        />
+        <Route exact path="/display" element={<Display />} />
+      </Routes>
+      <Footer />
+    </Container>
   );
 }
 

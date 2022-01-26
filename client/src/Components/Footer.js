@@ -23,7 +23,7 @@ export default function Footer() {
         </Row>
         <Row className="">
           <Col md={5} className="d-flex justify-content-evenly mx-auto">
-            <a href="https://github.com/JimmyAllDay" className="m-0">
+            <a href="https://twitter.com/?lang=en" className="m-0">
               <h2 className="text-info">
                 <FiTwitter />
               </h2>
@@ -33,7 +33,7 @@ export default function Footer() {
                 <FaGithubAlt />
               </h2>
             </a>
-            <a href="https://github.com/JimmyAllDay" className="m-0">
+            <a href="https://www.gatsbyjs.com" className="m-0">
               <h2 className="text-info">
                 <RiGatsbyLine />
               </h2>

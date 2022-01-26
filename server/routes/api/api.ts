@@ -1,15 +1,24 @@
 import express from "express";
-const routes = express.Router();
-
-import { Request, Response } from "express";
 const app = express();
 
+//Express router
+const routes = express.Router();
+
+//Express / typescript types
+import { Request, Response } from "express";
+
+// Node modules
 const path = require("path");
 const fs = require("fs");
-const fsPromises = require("fs").promises;
 
-const resize = require("../../modules/resize");
+//Express validator
+const { check, query } = require("express-validator");
 
+// Custom modules import
+const processImage = require("../../modules/processImage");
+const resize = processImage.resize;
+
+//Route
 routes.get("/", async (req: Request, res: Response) => {
   const image = req.query.name;
   const widthString = req.query.width;
@@ -17,48 +26,26 @@ routes.get("/", async (req: Request, res: Response) => {
   const widthNum = Number(widthString);
   const heightNum = Number(heightString);
 
-  // Get path to requested image in client
+  // Get path to image in images folder
   const localImage = path.join(__dirname, "../../images", `${image}.jpg`);
-  // get path to rquested image in thumb folder
-  const newImage = path.join(
+
+  // Get path to image in thumb folder
+  const thumbImage = path.join(
     __dirname,
     "../../thumb",
     `${image}_${widthNum}_${heightNum}.jpg`
   );
 
-  // path to image in server folder
-  const resizedImage = path.join(
-    __dirname,
-    "../../",
-    `${image}_${widthNum}_${heightNum}.jpg`
-  );
-
-  if (fs.existsSync(newImage)) {
-    console.log(`Image exists, sending: ${newImage}`);
-    res.sendFile(newImage);
+  if (fs.existsSync(thumbImage)) {
+    res.sendFile(thumbImage);
   } else {
-    console.log(`Image created, sending: ${newImage}`);
     try {
       await resize(localImage, widthNum, heightNum, image);
-      await fsPromises
-        .copyFile(resizedImage, newImage)
-        .then(function () {
-          fs.unlink(resizedImage, (err: any) => {
-            if (err) {
-              console.log(err);
-              return;
-            } else {
-              console.log(`deleted file: ${resizedImage}`);
-            }
-          });
-        })
-        .catch(function (error: any) {
-          console.log(error);
-        });
     } catch (err) {
       console.log(err);
+      return;
     }
-    res.sendFile(newImage);
+    res.sendFile(thumbImage);
   }
 });
 

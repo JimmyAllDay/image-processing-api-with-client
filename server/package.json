@@ -4,19 +4,22 @@
   "private": true,
   "dependencies": {
     "@types/express": "^4.17.13",
+    "@types/multer": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.17.2",
+    "express-validator": "^6.14.0",
     "jasmine": "^4.0.2",
     "jasmine-spec-reporter": "^7.0.0",
     "morgan": "^1.10.0",
-    "sharp": "^0.29.3"
+    "sharp": "^0.29.3",
+    "supertest": "^6.2.2"
   },
   "scripts": {
     "start": "node server.ts",
     "server": "nodemon ./server.ts",
     "build": "npx tsc",
     "jasmine": "jasmine",
-    "test": "npm run build && npm run jasmine"
+    "test": "rm -rf build/ && npm run build && npm run jasmine"
   },
   "eslintConfig": {},
   "browserslist": {
@@ -33,7 +36,9 @@
   },
   "devDependencies": {
     "@types/jasmine": "^3.10.3",
+    "@types/jasmine-node": "^1.14.36",
     "@types/node": "^17.0.8",
+    "@types/supertest": "^2.0.11",
     "eslint": "^8.5.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",

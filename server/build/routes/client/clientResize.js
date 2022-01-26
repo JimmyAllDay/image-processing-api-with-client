@@ -9,8 +9,17 @@ const app = (0, express_1.default)();
 const path = require("path");
 const fs = require("fs");
 const fsPromises = require("fs").promises;
-const resize = require("../../modules/resize");
-routes.post("/client", (req, res) => {
-    res.send("post request recieved from client");
+app.use(express_1.default.json());
+const processImage = require("../../modules/processImage");
+const resize = processImage.resize;
+const multer = require("multer");
+// Create multer object
+const imageUpload = multer({
+    dest: "./images",
+});
+routes.post("/", imageUpload.single("file"), (req, res) => {
+    //save incoming image to images folder
+    console.log(req.file);
+    res.json("post request recieved from client");
 });
 exports.default = routes;
