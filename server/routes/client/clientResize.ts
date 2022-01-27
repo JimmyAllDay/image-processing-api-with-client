@@ -1,29 +1,35 @@
 import express from "express";
-const routes = express.Router();
-
-import { Request, Response } from "express";
 const app = express();
+import { Request, Response } from "express";
 
+const routes = express.Router();
+const cors = require("cors");
+app.use(cors);
+
+//Node modules
 const path = require("path");
 const fs = require("fs");
 const fsPromises = require("fs").promises;
 
-app.use(express.json());
-
+// Import modules
 const processImage = require("../../modules/processImage");
 const resize = processImage.resize;
 
+//Multer package to store files
 const multer = require("multer");
 
 // Create multer object
-const imageUpload = multer({
-  dest: "./images",
+const upload = multer({
+  dest: "images/",
 });
 
-routes.post("/", imageUpload.single("file"), (req: Request, res: Response) => {
+routes.post("/", upload.single("file"), (req: Request, res: Response) => {
+  console.log(req);
   //save incoming image to images folder
-  console.log(req.file);
-  res.json("post request recieved from client");
+
+  // resize();
+
+  res.json("POST request recieved from client");
 });
 
 export default routes;

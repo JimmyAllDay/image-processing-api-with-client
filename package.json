@@ -19,7 +19,5 @@
     "url": "https://github.com/JimmyAllDay/image-processing-api-with-client/issues"
   },
   "homepage": "https://github.com/JimmyAllDay/image-processing-api-with-client#readme",
-  "dependencies": {
-    "multer": "^1.4.4"
-  }
+  "dependencies": {}
 }
