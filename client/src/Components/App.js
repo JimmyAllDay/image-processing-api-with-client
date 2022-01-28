@@ -4,7 +4,9 @@ import Upload from "./Upload.js";
 import Display from "./Display.js";
 import Footer from "./Footer";
 
-import * as formUtils from "./formUtils";
+import axios from "axios";
+
+// import * as formUtils from "./formUtils";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -18,6 +20,7 @@ function App() {
   const [heightData, setHeightData] = useState(null);
   const [widthData, setWidthData] = useState(null);
   const [userMessage, setUserMessage] = useState(null);
+  const [userImages, setUserImages] = useState([]);
 
   const handleImageSelect = (e) => {
     setSelectedFiles(e.target.files);
@@ -46,7 +49,24 @@ function App() {
     data.append("width", widthData);
     data.append("file", selectedFiles && selectedFiles[0]);
 
-    formUtils.sendHandler(data, statusMessage);
+    function sendHandler(data, messageCallback) {
+      const url = "http://localhost:5000/sendimage";
+      ///TODO: block req on input errors
+      messageCallback("Sending image");
+      axios
+        .post(url, data, {
+          responseType: "blob",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          const image = URL.createObjectURL(res.data);
+          setUserImages([...userImages, image]);
+        })
+        .catch((err) => console.log(err));
+    }
+    sendHandler(data, statusMessage);
   };
 
   return (
@@ -67,7 +87,11 @@ function App() {
             />
           }
         />
-        <Route exact path="/display" element={<Display />} />
+        <Route
+          exact
+          path="/display"
+          element={<Display userImages={userImages} />}
+        />
       </Routes>
       <Footer />
     </Container>

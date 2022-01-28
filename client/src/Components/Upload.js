@@ -30,7 +30,7 @@ export default function Upload({
                 <Form.Control
                   type="file"
                   name={selectedFiles && selectedFiles[0].name}
-                  accept="image/png, image/jpeg image/svg"
+                  accept="image/png, image/jpeg, image/jpg, image/svg"
                   onChange={(e) => handleImageSelect(e)}
                   // TODO: Set up for multiple files using 'multiple' tag below
                 />

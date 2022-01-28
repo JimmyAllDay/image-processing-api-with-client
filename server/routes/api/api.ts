@@ -15,7 +15,7 @@ const fs = require("fs");
 const { check, query } = require("express-validator");
 
 // Custom modules import
-const processImage = require("../../modules/processImage");
+const processImage = require("../../modules/sharpUtils");
 const resize = processImage.resize;
 
 //Route

@@ -18,7 +18,7 @@ function sendHandler(data, messageCallback) {
       },
     })
     .then((res) => {
-      console.log(res);
+      console.log(`response: ${res}`);
     })
     .catch((err) => console.log(err));
   return messageCallback("Sending image");

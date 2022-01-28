@@ -20,41 +20,4 @@ describe("Process image module", () => {
     //test resized image exists
     expect(output).toBeTruthy();
   });
-
-  xit("relocates image to thumbs folder", async () => {
-    //find image outputted from Resize()
-    const resized = Path.join(
-      __dirname,
-      "../../../",
-      `${name}_${width}_${height}.jpg`
-    );
-
-    //find dest to relocate image
-    const relocate = Path.join(
-      __dirname,
-      "../../../thumb",
-      `${name}_${width}_${height}.jpg`
-    );
-
-    //move resized image to thumbs folder
-    await CleanUpImage(resized, relocate);
-
-    const output = Fs.existsSync(
-      Path.join(__dirname, "../../../thumb", `${name}_${width}_${height}.jpg`)
-    );
-    //test resized image exists
-    expect(output).toBeTruthy();
-    //clean up resized image
-    Fs.unlink(relocate, (err: Error) => {
-      if (err) {
-        console.log("test unlink failed:", err);
-        return;
-      } else {
-        console.log("test file deleted");
-        return;
-      }
-    });
-  });
-
-  it("deletes image from server root after moving", () => {});
 });

@@ -6,7 +6,17 @@ import { Container, Col, Row } from "react-bootstrap";
 
 import { IoReturnUpBackOutline } from "react-icons/io5";
 
-export default function Display() {
+export default function Display(props) {
+  console.log(props);
+  const { userImages } = props;
+  const imageMap = userImages.map((image, i) => {
+    return (
+      <Col key={i} className="d-flex flex-wrap">
+        <img className="mx-auto" src={image} alt="" />
+      </Col>
+    );
+  });
+
   return (
     <Container fluid className="h-100 d-flex flex-column">
       <Row>
@@ -20,10 +30,7 @@ export default function Display() {
         </Link>
       </Row>
       <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2">
-        <Col className="d-flex flex-wrap border border-dark">This is a pic</Col>
-        <Col className="d-flex flex-wrap border border-dark">This is a pic</Col>
-        <Col className="d-flex flex-wrap border border-dark">This is a pic</Col>
-        <Col className="d-flex flex-wrap border border-dark">This is a pic</Col>
+        {imageMap}
       </Row>
     </Container>
   );
