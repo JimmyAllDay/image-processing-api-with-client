@@ -1,5 +1,4 @@
 import express from "express";
-const app = express();
 
 //Express router
 const routes = express.Router();
@@ -11,41 +10,69 @@ import { Request, Response } from "express";
 const path = require("path");
 const fs = require("fs");
 
-//Express validator
-const { check, query } = require("express-validator");
-
 // Custom modules import
 const processImage = require("../../modules/sharpUtils");
 const resize = processImage.resize;
+// Error handling modules
+const errorUtils = require("../../modules/errorUtils");
+const checkQueryParams = errorUtils.checkQueryParams;
+const checkImage = errorUtils.checkImage;
+const checkSaveDir = errorUtils.checkSaveDir;
+const checkInts = errorUtils.checkInts;
 
 //Route
 routes.get("/", async (req: Request, res: Response) => {
-  const image = req.query.name;
+  // check query params
+  await checkQueryParams(req.query, res);
+
+  // Set query params as string
+  const imageName = req.query.name;
+  //Check that image exists
+  await checkImage(imageName, res);
+
   const widthString = req.query.width;
   const heightString = req.query.height;
-  const widthNum = Number(widthString);
-  const heightNum = Number(heightString);
+
+  // convert string dimensions to ints
+  const width = Number(widthString);
+  const height = Number(heightString);
+
+  // Check converted dimensions
+  await checkInts(width, height, res);
+
+  //Check that save directory exists
+  const dirPath = path.join(__dirname, "../../thumb");
+  await checkSaveDir(dirPath);
 
   // Get path to image in images folder
-  const localImage = path.join(__dirname, "../../images", `${image}.jpg`);
+  const localImage = path.join(__dirname, "../../images", `${imageName}.jpg`);
 
   // Get path to image in thumb folder
-  const thumbImage = path.join(
+  const output = path.join(
     __dirname,
     "../../thumb",
-    `${image}_${widthNum}_${heightNum}.jpg`
+    `${imageName}_${width}_${height}.jpg`
   );
 
-  if (fs.existsSync(thumbImage)) {
-    res.sendFile(thumbImage);
+  if (fs.existsSync(output)) {
+    res.sendFile(output);
   } else {
     try {
-      await resize(localImage, widthNum, heightNum, image);
+      await resize(localImage, width, height, output, res);
     } catch (err) {
-      console.log(err);
+      res.send(
+        `An error has occured while processing the requested image. Please try again with valid parameters. Error: ${err}`
+      );
       return;
     }
-    res.sendFile(thumbImage);
+    res.sendFile(output, (err) => {
+      if (err) {
+        res.send(
+          `An error has occured while transimitting the requested image. Please try again with valid parameters. Error: ${err}`
+        );
+        return;
+      }
+    });
   }
 });
 

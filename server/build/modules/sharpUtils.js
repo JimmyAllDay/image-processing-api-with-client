@@ -8,11 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const sharp = require("sharp");
-const path = require("path");
-const fsPromises = require("fs").promises;
-const fs = require("fs");
-function resize(image, width, height, name) {
+function resize(image, width, height, output, res) {
     return __awaiter(this, void 0, void 0, function* () {
         //Resize file using sharp
         yield sharp(image)
@@ -20,22 +18,13 @@ function resize(image, width, height, name) {
             width: width,
             height: height,
         })
-            .toFile(path.join(__dirname, `../thumb/${name}_${width}_${height}.jpg`));
+            .toFile(output)
+            .catch((err) => {
+            res.send(err.message);
+            throw new Error();
+        });
     });
 }
-function cleanUpImage(resizedPath, thumbPath) {
-    return __awaiter(this, void 0, void 0, function* () {
-        //Relocate file after resize
-        yield fsPromises
-            .copyFile(resizedPath, thumbPath)
-            // Delete file in root directory
-            .then(fs.unlink(resizedPath, (err) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-        }));
-    });
-}
-module.exports = { resize: resize, cleanUpImage: cleanUpImage };
-console.log(path.join(__dirname, "../thumb"));
+module.exports = {
+    resize: resize,
+};

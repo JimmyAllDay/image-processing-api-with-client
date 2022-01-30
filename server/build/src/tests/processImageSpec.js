@@ -8,44 +8,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const processImage = require("../../modules/processImage");
-const Resize = processImage.resize;
-const CleanUpImage = processImage.cleanUpImage;
+const sharpUtils = require("../../modules/sharpUtils");
+const Resize = sharpUtils.resize;
 const Path = require("path");
 const Fs = require("fs");
+//TODO: You may need to use supertest to test the below
 describe("Process image module", () => {
-    const input = Path.join(__dirname, "../../../images", "encenadaport.jpg");
+    const name1 = "encenadaport";
+    const name2 = "fjord";
+    const input1 = Path.join(__dirname, "../../../images", `${name1}.jpg`);
+    const input2 = Path.join(__dirname, "../../../images", `${name2}.jpg`);
     const width = 200;
     const height = 200;
-    const name = "encenadaport";
+    const output1 = Fs.existsSync(Path.join(__dirname, "../../../", `${name1}_${width}_${height}.jpg`));
+    const output2 = Fs.existsSync(Path.join(__dirname, "../../../", `${name2}_${width}_${height}.jpg`));
     it("creates a new image", () => __awaiter(void 0, void 0, void 0, function* () {
         //call resize function
-        yield Resize(input, width, height, name);
-        const output = Fs.existsSync(Path.join(__dirname, "../../../thumb", `${name}_${width}_${height}.jpg`));
+        yield Resize(input1, width, height, output1, res);
         //test resized image exists
-        expect(output).toBeTruthy();
+        expect(output1).toBeTruthy();
     }));
-    xit("relocates image to thumbs folder", () => __awaiter(void 0, void 0, void 0, function* () {
-        //find image outputted from Resize()
-        const resized = Path.join(__dirname, "../../../", `${name}_${width}_${height}.jpg`);
-        //find dest to relocate image
-        const relocate = Path.join(__dirname, "../../../thumb", `${name}_${width}_${height}.jpg`);
-        //move resized image to thumbs folder
-        yield CleanUpImage(resized, relocate);
-        const output = Fs.existsSync(Path.join(__dirname, "../../../thumb", `${name}_${width}_${height}.jpg`));
+    it("creates correct image with alternate params", () => __awaiter(void 0, void 0, void 0, function* () {
+        //call resize function
+        yield Resize(input2, width, height, output2, res);
         //test resized image exists
-        expect(output).toBeTruthy();
-        //clean up resized image
-        Fs.unlink(relocate, (err) => {
-            if (err) {
-                console.log("test unlink failed:", err);
-                return;
-            }
-            else {
-                console.log("test file deleted");
-                return;
-            }
-        });
+        expect(output1).toBeTruthy();
     }));
-    it("deletes image from server root after moving", () => { });
 });

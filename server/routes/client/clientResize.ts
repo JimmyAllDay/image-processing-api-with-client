@@ -13,7 +13,7 @@ const fs = require("fs").promises;
 
 // Import Sharp utilities modules
 const processImage = require("../../modules/sharpUtils");
-const resizeClient = processImage.resizeClient;
+const resize = processImage.resize;
 
 //Import Multer utilities modules
 const multerUtils = require("../../modules/multerUtils");
@@ -25,7 +25,7 @@ const getNameNoExt = multerUtils.getNameNoExt;
 const upload = multer({
   storage: fileStorage,
 });
-
+//TODO: Error handling has not been addressed for the below
 routes.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const heightString = req.body.height;
   const widthString = req.body.width;
@@ -40,17 +40,17 @@ routes.post("/", upload.single("file"), async (req: Request, res: Response) => {
     "../../clientResize",
     `${nameNoExt}_${heightString}_${widthString}${format}`
   );
-  await resizeClient(imagePath, width, height, output);
+  await resize(imagePath, width, height, output, res);
   res.sendFile(output, (err: Error) => {
     if (err) {
-      console.log(err);
+      res.send(err.message);
       return;
     } else {
       try {
         fs.unlink(output);
         fs.unlink(imagePath);
       } catch (err) {
-        console.log(err);
+        throw new Error();
       }
     }
   });

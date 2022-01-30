@@ -19,7 +19,6 @@ xdescribe("API endpoint", () => {
     const baseURL = "localhost://5000";
     const width = 200;
     const height = 200;
-    xit("tests that resize is called when passed all arguments", () => { });
     xdescribe("API Error handling", () => {
         // it('tests that no width parameter returns an error', ()=>{
         //     const response = await request.get("/api")
