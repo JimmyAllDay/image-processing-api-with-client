@@ -19,5 +19,7 @@
     "url": "https://github.com/JimmyAllDay/image-processing-api-with-client/issues"
   },
   "homepage": "https://github.com/JimmyAllDay/image-processing-api-with-client#readme",
-  "dependencies": {}
+  "dependencies": {
+    "jasmine-supertest": "^1.0.0"
+  }
 }

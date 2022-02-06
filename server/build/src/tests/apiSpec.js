@@ -14,30 +14,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const server_1 = __importDefault(require("../../server"));
+const finishTestcase = require("jasmine-supertest");
+// var server = require('../lib/server');
+// var supertest = require('supertest');
+// var finishTestcase = require('jasmine-supertest');
+// describe('jasmine-supertest test suite', function() {
+//     it('calls done without any params and finishes the test case is fine', function(done) {
+//             var app = supertest(server);
+//             app.get('/incorrect-url').expect(404).end(finishTestcase(doneMock));
+//     });
+// });
 const request = (0, supertest_1.default)(server_1.default);
-xdescribe("API endpoint", () => {
-    const baseURL = "localhost://5000";
-    const width = 200;
-    const height = 200;
-    xdescribe("API Error handling", () => {
-        // it('tests that no width parameter returns an error', ()=>{
-        //     const response = await request.get("/api")
-        //   expect(response).toThrow(expected value)
-        // })
-        // it('tests that no height parameter returns an error', ()=>{
-        //     const response = await request.get("/api")
-        //   expect(response).toThrow(expected value)
-        // })
-        // it('tests that an non-matching name parameter returns an error', ()=>{
-        //     const response = await request.get("/api")
-        //   expect(response).toThrow(expected value)
-        // })
-    });
-    describe("API Responses", () => {
-        it(`tests GET /api route`, (done) => __awaiter(void 0, void 0, void 0, function* () {
-            const response = yield request.get("/api");
+const imageNameArray = [
+    "encenadaport",
+    "fjord",
+    "icelandwaterfall",
+    "palmtunnel",
+    "santamonica",
+];
+describe("API endpoints", () => {
+    //This function was copied from the MDN Web Docs at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+    let width;
+    let height;
+    let imageName;
+    beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+        width = getRandomInt(500, 1000);
+        height = getRandomInt(500, 1000);
+        imageName = imageNameArray[getRandomInt(0, imageNameArray.length)];
+    }));
+    describe("resize endpoint", () => {
+        it("makes successful GET request with correct query string", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request.get(`/api?name=${imageName}&width=${width}&height=${height}`);
+            console.log(response);
             expect(response.status).toBe(200);
-            done();
         }));
     });
 });

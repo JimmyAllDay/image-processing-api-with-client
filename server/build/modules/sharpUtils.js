@@ -25,6 +25,14 @@ function resize(image, width, height, output, res) {
         });
     });
 }
+const imageNameArray = [
+    "encenadaport",
+    "fjord",
+    "icelandwaterfall",
+    "palmtunnel",
+    "santamonica",
+];
 module.exports = {
     resize: resize,
+    imageNameArray: imageNameArray,
 };

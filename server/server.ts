@@ -10,6 +10,7 @@ const morgan = require("morgan");
 //Routes
 import apiRoute from "./routes/api/api";
 import clientResize from "./routes/client/clientResize";
+import routeError from "./routes/api/index";
 
 // TODO: there is currently no global error handling on this server. This should be set up after deciding on an approach.
 
@@ -22,6 +23,9 @@ app.use("/api", apiRoute);
 
 // Client
 app.use("/sendImage", clientResize);
+
+//Global route matcher
+app.use("*", routeError);
 
 // Log server listening
 app.listen(port, () => {

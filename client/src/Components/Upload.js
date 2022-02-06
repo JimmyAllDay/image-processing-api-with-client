@@ -32,7 +32,6 @@ export default function Upload({
                   name={selectedFiles && selectedFiles[0].name}
                   accept="image/png, image/jpeg, image/jpg, image/svg"
                   onChange={(e) => handleImageSelect(e)}
-                  // TODO: Set up for multiple files using 'multiple' tag below
                 />
               </Form.Group>
               <Form.Group className="mb-2 mt-2 d-flex" controlId="selectheight">

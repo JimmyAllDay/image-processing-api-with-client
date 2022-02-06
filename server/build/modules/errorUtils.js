@@ -15,7 +15,7 @@ const path = require("path");
 // TODO: the below may not be good ways to handle errors and should be refactored on further learning
 // User message strings
 const URL = "http://localhost:5000/"; //Update after deployment
-const errorInfo = `An example query string is <i>${URL}api?name=encenadaport&width=200&height=200</i><br><br>The available image names are: encenadaport, fjord, icelandwaterfall, palmtunnel, santamonica.`;
+const errorInfo = `An example query string is <i>${URL}api?name=encenadaport&width=200&height=200</i><br><br>In the above string, "name=" must be followed by a valid image name, and "width=" and "height=" must be followed by valid numbers.<br><br>The available image names are: encenadaport, fjord, icelandwaterfall, palmtunnel, and santamonica.`;
 //Validate query params
 //Note to markers: please note that the below contains a parameter typed with 'any'. I have included this as a workaround because the solution to typing this correctly requires a typescript interface that is beyond the scope of this project. I have addressed use of the 'any' type within the ES Lint rules and this is the only occaision on which I have used this type.
 function checkQueryParams(params, res) {
@@ -69,4 +69,5 @@ module.exports = {
     checkImage: checkImage,
     checkSaveDir: checkSaveDir,
     checkInts: checkInts,
+    errorInfo: errorInfo,
 };

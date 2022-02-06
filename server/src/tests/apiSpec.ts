@@ -1,33 +1,42 @@
 import supertest from "supertest";
 import app from "../../server";
+// const finishTestcase = require("jasmine-supertest");
 
 const request = supertest(app);
 
-xdescribe("API endpoint", () => {
-  const baseURL = "localhost://5000";
-  const width = 200;
-  const height = 200;
+const imageNameArray = [
+  "encenadaport",
+  "fjord",
+  "icelandwaterfall",
+  "palmtunnel",
+  "santamonica",
+];
 
-  xdescribe("API Error handling", () => {
-    // it('tests that no width parameter returns an error', ()=>{
-    //     const response = await request.get("/api")
-    //   expect(response).toThrow(expected value)
-    // })
-    // it('tests that no height parameter returns an error', ()=>{
-    //     const response = await request.get("/api")
-    //   expect(response).toThrow(expected value)
-    // })
-    // it('tests that an non-matching name parameter returns an error', ()=>{
-    //     const response = await request.get("/api")
-    //   expect(response).toThrow(expected value)
-    // })
+describe("API endpoints", () => {
+  //This function was copied from the MDN Web Docs at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+  function getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  let width: number;
+  let height: number;
+  let imageName: string;
+
+  beforeEach(async () => {
+    width = getRandomInt(500, 1000);
+    height = getRandomInt(500, 1000);
+    imageName = imageNameArray[getRandomInt(0, imageNameArray.length)];
   });
 
-  describe("API Responses", () => {
-    it(`tests GET /api route`, async (done) => {
-      const response = await request.get("/api");
+  describe("resize endpoint", () => {
+    it("makes successful GET request with correct query string", async () => {
+      const response = await request.get(
+        `/api?name=${imageName}&width=${width}&height=${height}`
+      );
+      console.log(response);
       expect(response.status).toBe(200);
-      done();
     });
   });
 });

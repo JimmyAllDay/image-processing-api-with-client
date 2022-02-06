@@ -13,6 +13,7 @@ const morgan = require("morgan");
 //Routes
 const api_1 = __importDefault(require("./routes/api/api"));
 const clientResize_1 = __importDefault(require("./routes/client/clientResize"));
+const index_1 = __importDefault(require("./routes/api/index"));
 // TODO: there is currently no global error handling on this server. This should be set up after deciding on an approach.
 //Initialise middleware
 app.use(cors(), morgan("dev"));
@@ -21,6 +22,8 @@ app.use(cors(), morgan("dev"));
 app.use("/api", api_1.default);
 // Client
 app.use("/sendImage", clientResize_1.default);
+//Global route matcher
+app.use("*", index_1.default);
 // Log server listening
 app.listen(port, () => {
     // eslint-disable-next-line no-console
