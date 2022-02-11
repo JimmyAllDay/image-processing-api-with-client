@@ -14,16 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const server_1 = __importDefault(require("../../server"));
-const finishTestcase = require("jasmine-supertest");
-// var server = require('../lib/server');
-// var supertest = require('supertest');
-// var finishTestcase = require('jasmine-supertest');
-// describe('jasmine-supertest test suite', function() {
-//     it('calls done without any params and finishes the test case is fine', function(done) {
-//             var app = supertest(server);
-//             app.get('/incorrect-url').expect(404).end(finishTestcase(doneMock));
-//     });
-// });
+// const finishTestcase = require("jasmine-supertest");
 const request = (0, supertest_1.default)(server_1.default);
 const imageNameArray = [
     "encenadaport",
@@ -42,11 +33,11 @@ describe("API endpoints", () => {
     let width;
     let height;
     let imageName;
-    beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+    beforeEach(() => {
         width = getRandomInt(500, 1000);
         height = getRandomInt(500, 1000);
         imageName = imageNameArray[getRandomInt(0, imageNameArray.length)];
-    }));
+    });
     describe("resize endpoint", () => {
         it("makes successful GET request with correct query string", () => __awaiter(void 0, void 0, void 0, function* () {
             const response = yield request.get(`/api?name=${imageName}&width=${width}&height=${height}`);

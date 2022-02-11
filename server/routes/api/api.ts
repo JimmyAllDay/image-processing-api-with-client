@@ -22,13 +22,23 @@ const checkInts = errorUtils.checkInts;
 
 //Route
 routes.get("/", async (req: Request, res: Response) => {
-  // check query params
-  await checkQueryParams(req.query, res);
+  try {
+    // check query params
+    await checkQueryParams(req.query, res);
+  } catch (err: any) {
+    res.send(`An error has occured: ${err.message}`);
+  }
 
   // Set query params as string
   const imageName = req.query.name;
   //Check that image exists
-  await checkImage(imageName, res);
+
+  try {
+    // check query params
+    await checkImage(imageName, res);
+  } catch (err: any) {
+    res.send(`An error has occured: ${err.message}`);
+  }
 
   const widthString = req.query.width;
   const heightString = req.query.height;
@@ -37,12 +47,23 @@ routes.get("/", async (req: Request, res: Response) => {
   const width = Number(widthString);
   const height = Number(heightString);
 
-  // Check converted dimensions
-  await checkInts(width, height, res);
+  try {
+    // Check converted dimensions
+    await checkInts(width, height, res);
+  } catch (err: any) {
+    res.send(`An error has occured: ${err.message}`);
+  }
 
-  //Check that save directory exists
+  // Save directory path
   const dirPath = path.join(__dirname, "../../thumb");
-  await checkSaveDir(dirPath);
+  //Check that save directory exists
+
+  try {
+    // Check converted dimensions
+    await checkSaveDir(dirPath);
+  } catch (err: any) {
+    res.send(`An error has occured: ${err.message}`);
+  }
 
   // Get path to image in images folder
   const localImage = path.join(__dirname, "../../images", `${imageName}.jpg`);
@@ -63,14 +84,12 @@ routes.get("/", async (req: Request, res: Response) => {
       res.send(
         `An error has occured while processing the requested image. Please try again with valid parameters. Error: ${err}`
       );
-      return;
     }
     res.sendFile(output, (err) => {
       if (err) {
         res.send(
           `An error has occured while transimitting the requested image. Please try again with valid parameters. Error: ${err}`
         );
-        return;
       }
     });
   }

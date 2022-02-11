@@ -24,7 +24,7 @@ describe("API endpoints", () => {
   let height: number;
   let imageName: string;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     width = getRandomInt(500, 1000);
     height = getRandomInt(500, 1000);
     imageName = imageNameArray[getRandomInt(0, imageNameArray.length)];

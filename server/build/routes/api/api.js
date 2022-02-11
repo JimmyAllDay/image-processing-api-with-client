@@ -29,22 +29,45 @@ const checkSaveDir = errorUtils.checkSaveDir;
 const checkInts = errorUtils.checkInts;
 //Route
 routes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // check query params
-    yield checkQueryParams(req.query, res);
+    try {
+        // check query params
+        yield checkQueryParams(req.query, res);
+    }
+    catch (err) {
+        res.send(`An error has occured: ${err.message}`);
+    }
     // Set query params as string
     const imageName = req.query.name;
     //Check that image exists
-    yield checkImage(imageName, res);
+    try {
+        // check query params
+        yield checkImage(imageName, res);
+    }
+    catch (err) {
+        res.send(`An error has occured: ${err.message}`);
+    }
     const widthString = req.query.width;
     const heightString = req.query.height;
     // convert string dimensions to ints
     const width = Number(widthString);
     const height = Number(heightString);
-    // Check converted dimensions
-    yield checkInts(width, height, res);
-    //Check that save directory exists
+    try {
+        // Check converted dimensions
+        yield checkInts(width, height, res);
+    }
+    catch (err) {
+        res.send(`An error has occured: ${err.message}`);
+    }
+    // Save directory path
     const dirPath = path.join(__dirname, "../../thumb");
-    yield checkSaveDir(dirPath);
+    //Check that save directory exists
+    try {
+        // Check converted dimensions
+        yield checkSaveDir(dirPath);
+    }
+    catch (err) {
+        res.send(`An error has occured: ${err.message}`);
+    }
     // Get path to image in images folder
     const localImage = path.join(__dirname, "../../images", `${imageName}.jpg`);
     // Get path to image in thumb folder
@@ -58,12 +81,10 @@ routes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         catch (err) {
             res.send(`An error has occured while processing the requested image. Please try again with valid parameters. Error: ${err}`);
-            return;
         }
         res.sendFile(output, (err) => {
             if (err) {
                 res.send(`An error has occured while transimitting the requested image. Please try again with valid parameters. Error: ${err}`);
-                return;
             }
         });
     }
