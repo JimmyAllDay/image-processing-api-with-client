@@ -18,7 +18,8 @@
   "scripts": {
     "start": "node server.ts",
     "server": "nodemon ./server.ts",
-    "build": "npx tsc",
+    "postinstall": "tsc",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "jasmine": "jasmine",
     "lint": "eslint . --ext .ts",
     "test": "rm -rf build/ && npm run build && npm run jasmine",

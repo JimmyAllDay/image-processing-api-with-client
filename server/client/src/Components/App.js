@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navigation from "./Navigation";
 import AppRoutes from "./AppRoutes";
-import axios from "axios";
+import { axiosInstance } from "./config";
 
 import { Container } from "react-bootstrap";
 
@@ -29,10 +29,9 @@ function App() {
     data.append("width", width);
 
     function sendHandler(data) {
-      const url = "http://localhost:5000/sendimage";
       if (fileName && width && height) {
-        axios
-          .post(url, data, {
+        axiosInstance
+          .post("/sendImage", data, {
             responseType: "blob",
             headers: {
               "Content-Type": "multipart/form-data",

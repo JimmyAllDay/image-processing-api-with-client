@@ -17,7 +17,9 @@ export default function About() {
         You can use this project in two ways: <br />
         <br />
         Firstly, you can use the interface on the home page to upload images,
-        and resize them based on parameters you can input from UI.
+        and resize them based on parameters you can input from UI. The server
+        will not store any images you resize, but they should remain in your
+        browser until you either refresh or leave the page.
         <br />
         <br />
         Secondly, you can make calls directly to the server from your browser.
@@ -25,7 +27,8 @@ export default function About() {
         <br />
         The URL should have the format: <br />
         <br />
-        'http://localhost:5000/api?name=<b>imagename</b>&width=<b>number</b>
+        'https://jimmyallday-image-api.herokuapp.com/api?name=<b>imagename</b>
+        &width=<b>number</b>
         &height=<b>number</b>'
         <br />
         <br />
@@ -34,13 +37,13 @@ export default function About() {
         in another tab in your browser:
         <br />
         <br />
-        http://localhost:5000/api?name=encenadaport&width=600&height=600
+        https://jimmyallday-image-api.herokuapp.com/api?name=encenadaport&width=600&height=600
         <br />
         <br />
-        http://localhost:5000/api?name=fjord&width=800&height=400
+        https://jimmyallday-image-api.herokuapp.com/api?name=fjord&width=800&height=400
         <br />
         <br />
-        http://localhost:5000/api?name=palmtunnel&width=1000&height=1000
+        https://jimmyallday-image-api.herokuapp.com/api?name=palmtunnel&width=1000&height=1000
         <br />
         <br />
         If you want to try a unique URL, the available image names are: fjord,

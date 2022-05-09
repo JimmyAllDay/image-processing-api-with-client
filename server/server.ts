@@ -1,9 +1,10 @@
 //Server
 const express = require("express");
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 3000;
 
 //Middleware
+
 const cors = require("cors");
 const morgan = require("morgan");
 
@@ -11,18 +12,25 @@ const morgan = require("morgan");
 import apiRoute from "./routes/api/api";
 import clientResize from "./routes/client/clientResize";
 import routeError from "./routes/api/index";
+import path from "path";
 
-// TODO: there is currently no global error handling on this server. This should be set up after deciding on an approach.
+const client = path.join(__dirname, "/client/build");
+
+app.use(express.static(client));
 
 //Initialise middleware
 app.use(cors(), morgan("dev"));
 
 //API
-//Example query string http://localhost:5000/api?name=encenadaport&width=200&height=200
 app.use("/api", apiRoute);
 
-// Client
+// Return image to client
 app.use("/sendImage", clientResize);
+
+// Serve client
+app.get("/", (req: any, res: any) => {
+  res.sendFile(client, "index.html");
+});
 
 //Global route matcher
 app.use("*", routeError);
