@@ -1,19 +1,36 @@
 import React from "react";
 
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, NavItem, Container, Col } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 function Navigation() {
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar
+      style={{
+        height: "60px",
+        backgroundColor: "rgb(53,56,57)",
+      }}
+    >
       <Container>
-        <Navbar.Brand href="#home" className="text-info">
+        <Navbar.Brand className="text-white d-none d-sm-flex">
           Image Processing API
         </Navbar.Brand>
-        <Nav className="me-auto">
-          {/* <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link> */}
-        </Nav>
+        <Navbar.Brand className="text-white d-flex d-sm-none">
+          Image API
+        </Navbar.Brand>
+        <Col xs={7} sm={5} lg={3} className="ms-auto ms-sm-5 me-sm-auto">
+          <Nav className="me-auto text-light w-100 d-flex justify-content-between">
+            <LinkContainer to="/">
+              <NavItem>Home</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/display">
+              <NavItem>Images</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/about">
+              <NavItem>About</NavItem>
+            </LinkContainer>
+          </Nav>
+        </Col>
       </Container>
     </Navbar>
   );

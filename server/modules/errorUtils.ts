@@ -15,16 +15,19 @@ async function checkQueryParams(params: any, res: Response) {
     res.send(
       `No image name in query. Please re-send request and include an image name. <br> <br> ${errorInfo}`
     );
+    return;
   }
   if (!params.width) {
     res.send(
       `No width parameter in query. Please re-send request and include a width parameter. <br> <br> ${errorInfo}`
     );
+    return;
   }
   if (!params.height) {
     res.send(
       `No height parameter in query. Please re-send request and include a height parameter. <br> <br> ${errorInfo}`
     );
+    return;
   }
 }
 
@@ -36,6 +39,7 @@ async function checkImage(name: string, res: Response) {
     res.send(
       `An image with that name does not exist on this server. Please check the name of the image. <br><br>${errorInfo}`
     );
+    return;
   }
 }
 
@@ -45,14 +49,17 @@ async function checkInts(width: number, height: number, res: Response) {
     res.send(
       `Width and height parameters must be positive integers. Please re-send request with valid widht and height parameters. <br><br> ${errorInfo}`
     );
+    return;
   } else if (width <= 0) {
     res.send(
       `Width parameter must be a positive integer. Please re-send request with valid width parameter.<br><br> ${errorInfo}`
     );
+    return;
   } else if (height <= 0) {
     res.send(
       `Height parameter must be a positive integer. Please re-send request with valid height parameter.<br><br> ${errorInfo}`
     );
+    return;
   }
 }
 

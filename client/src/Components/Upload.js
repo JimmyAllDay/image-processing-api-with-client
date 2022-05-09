@@ -1,23 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+
+import DimensionInput from "./DimensionInput";
 
 import { Link } from "react-router-dom";
 
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner, Button } from "react-bootstrap";
 
 import { HiArrowCircleRight } from "react-icons/hi";
 
-export default function Upload({
-  handleImageSelect,
-  handleHeightSelect,
-  handleWidthSelect,
-  selectedFiles,
-  formSubmit,
-  userMessage,
-}) {
+export default function Upload(props) {
+  const { formSubmit, userMessage, loading } = props;
+
+  const [file, setFile] = useState("");
+  const ref = React.useRef();
+
+  const [height, setHeight] = useState(undefined);
+  const [width, setWidth] = useState(undefined);
+
+  const widthHandler = (width) => {
+    setWidth(width);
+  };
+
+  const heightHandler = (width) => {
+    setHeight(width);
+  };
+
+  const clearFileInput = () => {
+    return (ref.current.value = "");
+  };
+
   return (
     <Container fluid className="p-0 h-100 d-flex flex-column">
       <Container
-        className="rounded-3 m-auto justify-content-center shadow-lg"
+        className="rounded-3 justify-content-center shadow-lg bg-blur mt-auto "
         style={{ width: "auto", height: "235px" }}
       >
         <Row className="mx-auto">
@@ -28,64 +43,63 @@ export default function Upload({
                   <h5 className="my-auto">Image:</h5>
                 </Form.Label>
                 <Form.Control
+                  ref={ref}
                   type="file"
-                  name={selectedFiles && selectedFiles[0].name}
+                  name={file}
                   accept="image/png, image/jpeg, image/jpg, image/svg"
-                  onChange={(e) => handleImageSelect(e)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-2 mt-2 d-flex" controlId="selectheight">
-                <Form.Label className="my-auto me-2">
-                  <h5 className="my-auto">Height:</h5>
-                </Form.Label>
-                <Form.Select
-                  aria-label="select height"
-                  onChange={(e) => handleHeightSelect(e)}
-                >
-                  <option value={null}>Select height</option>
-                  <option value="200">200 px</option>
-                  <option value="300">300 px</option>
-                  <option value="400">400 px</option>
-                  <option value="500">500 px</option>
-                  <option value="600">600 px</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mt-2 d-flex" controlId="selectwidth">
-                <Form.Label className="my-auto me-3">
-                  <h5 className="my-auto">Width:</h5>
-                </Form.Label>
-                <Form.Select
-                  aria-label="select width"
-                  onChange={(e) => handleWidthSelect(e)}
-                >
-                  <option value={null}>Select width</option>
-                  <option value="200">200 px</option>
-                  <option value="300">300 px</option>
-                  <option value="400">400 px</option>
-                  <option value="500">500 px</option>
-                  <option value="600">600 px</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-2 d-flex" controlId="selectwidth">
-                <Form.Control
-                  className="mt-3"
-                  type="submit"
-                  onClick={(e) => {
-                    formSubmit(e);
+                  onChange={(e) => {
+                    setFile(e.target.files);
                   }}
                 />
               </Form.Group>
+              <DimensionInput
+                axis="height"
+                handler={heightHandler}
+                value={height}
+              />
+              <DimensionInput
+                axis="width"
+                handler={widthHandler}
+                value={width}
+              />
+              <Form.Group className="mb-2 d-flex" controlId="selectwidth">
+                <Button
+                  className="w-100 mt-3"
+                  variant="primary"
+                  type="submit"
+                  disabled={!height || !width || !file ? true : false}
+                  onClick={(e) => {
+                    formSubmit(e, file, width, height);
+                    setHeight("");
+                    setWidth("");
+                    clearFileInput();
+                  }}
+                >
+                  Submit
+                </Button>
+              </Form.Group>
             </Form>
-            <div className="w-100 d-flex">
-              <p className="mt-5 w-auto mx-auto text-danger">{userMessage}</p>
-            </div>
           </Col>
         </Row>
       </Container>
+      <div className="w-100 d-flex mb-auto mt-3" style={{ height: "25px" }}>
+        {loading ? (
+          <Spinner
+            variant="primary"
+            className="mx-auto"
+            animation="border"
+            size="sm"
+          />
+        ) : (
+          <p className="p-0 w-auto mx-auto my-0 text-secondary">
+            {userMessage}
+          </p>
+        )}
+      </div>
       <h1 className="align-self-end me-3 mb-3">
         <Link to="/display">
           <HiArrowCircleRight
-            className="rounded-2 shadow"
+            className="rounded-2 shadow bg-light"
             style={{ width: "60px", height: "40px" }}
           />
         </Link>

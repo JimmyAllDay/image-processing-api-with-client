@@ -1,99 +1,67 @@
 import React, { useState } from "react";
 import Navigation from "./Navigation";
-import Upload from "./Upload.js";
-import Display from "./Display.js";
-import Footer from "./Footer";
-
+import AppRoutes from "./AppRoutes";
 import axios from "axios";
-
-// import * as formUtils from "./formUtils";
-
-import { Routes, Route } from "react-router-dom";
 
 import { Container } from "react-bootstrap";
 
 import "../styles/App.scss";
 
 function App() {
-  // TODO: Add CSS slide transition, using Transition Group
-  const [selectedFiles, setSelectedFiles] = useState(null);
-  const [heightData, setHeightData] = useState(null);
-  const [widthData, setWidthData] = useState(null);
-  const [userMessage, setUserMessage] = useState(null);
   const [userImages, setUserImages] = useState([]);
+  const [userMessage, setUserMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleImageSelect = (e) => {
-    setSelectedFiles(e.target.files);
-  };
-
-  const handleHeightSelect = (e) => {
-    setHeightData(e.target.value);
-  };
-  const handleWidthSelect = (e) => {
-    setWidthData(e.target.value);
-  };
-
-  //Return messages to UI about errors and request status
+  //Controls messages to UI about req errors and status
   const statusMessage = (message) => {
     setUserMessage(message);
     setTimeout(() => {
       setUserMessage(null);
-    }, 3000);
-    return message;
+    }, 2000);
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = (e, fileName, height, width) => {
     e.preventDefault();
+    setLoading(true);
     const data = new FormData();
-    data.append("height", heightData);
-    data.append("width", widthData);
-    data.append("file", selectedFiles && selectedFiles[0]);
+    data.append("file", fileName && fileName[0]);
+    data.append("height", height);
+    data.append("width", width);
 
-    function sendHandler(data, messageCallback) {
+    function sendHandler(data) {
       const url = "http://localhost:5000/sendimage";
-      ///TODO: block req on input errors
-      messageCallback("Sending image");
-      axios
-        .post(url, data, {
-          responseType: "blob",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          const image = URL.createObjectURL(res.data);
-          setUserImages([...userImages, image]);
-        })
-        .catch((err) => console.log(err));
+      if (fileName && width && height) {
+        axios
+          .post(url, data, {
+            responseType: "blob",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            const image = URL.createObjectURL(res.data);
+            setUserImages([...userImages, image]);
+            setLoading(false);
+            statusMessage("Image ready");
+          })
+          .catch((err) => {
+            setLoading(false);
+            statusMessage(err.message + ". Try again or come back later");
+          });
+      }
     }
-    sendHandler(data, statusMessage);
+    sendHandler(data);
   };
 
   return (
-    <Container fluid className="p-0 h-100 d-flex flex-column">
+    <Container fluid className="p-0 h-100 d-flex flex-column bg-light">
       <Navigation />
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <Upload
-              userMessage={userMessage}
-              handleImageSelect={handleImageSelect}
-              handleHeightSelect={handleHeightSelect}
-              handleWidthSelect={handleWidthSelect}
-              formSubmit={formSubmit}
-              selectedFiles={selectedFiles}
-            />
-          }
-        />
-        <Route
-          exact
-          path="/display"
-          element={<Display userImages={userImages} />}
-        />
-      </Routes>
-      <Footer />
+      <AppRoutes
+        formSubmit={formSubmit}
+        userMessage={userMessage}
+        loading={loading}
+        userImages={userImages}
+      />
     </Container>
   );
 }
