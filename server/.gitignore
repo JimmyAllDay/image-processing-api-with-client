@@ -12,7 +12,7 @@
 
 # production
 /client/build
-/build
+build
 
 # misc
 .DS_Store

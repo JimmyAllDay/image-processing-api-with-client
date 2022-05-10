@@ -16,14 +16,9 @@
     "supertest": "^6.2.2"
   },
   "scripts": {
-    "start": "node server.ts",
-    "server": "nodemon ./server.ts",
+    "start": "node build/server.js",
     "postinstall": "tsc",
-    "heroku-postbuild": "cd client && npm install && npm run build",
-    "jasmine": "jasmine",
-    "lint": "eslint . --ext .ts",
-    "test": "rm -rf build/ && npm run build && npm run jasmine",
-    "test-watch": "jasmine-node --autotest --watch ./src/tests"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "eslintConfig": {},
   "browserslist": {
