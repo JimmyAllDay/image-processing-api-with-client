@@ -9,6 +9,7 @@ import { Request, Response } from "express";
 // Node modules
 const path = require("path");
 const fs = require("fs");
+const fse = require("fs-extra");
 
 // Custom modules import
 const processImage = require("../../modules/sharpUtils");
@@ -32,6 +33,7 @@ routes.get("/", async (req: Request, res: Response) => {
   const height = Number(heightString);
 
   const dirPath = path.join(__dirname, "../../../thumb");
+  fse.ensureDirSync(dirPath);
 
   // Get path to image in images folder
   const localImage = path.join(

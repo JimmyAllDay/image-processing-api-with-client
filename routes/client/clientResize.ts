@@ -10,6 +10,7 @@ app.use(cors);
 //Node modules
 const path = require("path");
 const fs = require("fs").promises;
+const fse = require("fs-extra");
 
 // Import Sharp utilities modules
 const processImage = require("../../modules/sharpUtils");
@@ -32,6 +33,8 @@ routes.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const height = Number(heightString);
   const width = Number(widthString);
   const name = req.file?.originalname;
+  const imageDir = path.join(__dirname, "../../clientResize");
+  fse.ensureDirSync(imageDir);
   const imagePath = path.join(__dirname, "../../clientResize", `${name}`);
   const nameNoExt = getNameNoExt(req.file?.originalname);
   const format = getFileType(name);
