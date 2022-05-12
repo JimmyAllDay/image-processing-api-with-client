@@ -20,7 +20,7 @@
   "scripts": {
     "postinstall": "tsc",
     "start": "node build/server.js",
-    "nodemon": "nodemon server.ts"
+    "nodemon": "nodemon build/server.js"
   },
   "eslintConfig": {},
   "browserslist": {

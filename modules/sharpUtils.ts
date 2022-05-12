@@ -21,15 +21,6 @@ async function resize(
     });
 }
 
-const imageNameArray = [
-  "encenadaport",
-  "fjord",
-  "icelandwaterfall",
-  "palmtunnel",
-  "santamonica",
-];
-
 module.exports = {
   resize: resize,
-  imageNameArray: imageNameArray,
 };
