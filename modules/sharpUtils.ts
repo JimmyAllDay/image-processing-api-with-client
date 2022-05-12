@@ -17,7 +17,6 @@ async function resize(
     .toFile(output)
     .catch((err: Error) => {
       res.send(err.message);
-      throw new Error();
     });
 }
 
