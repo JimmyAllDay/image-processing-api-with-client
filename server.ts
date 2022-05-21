@@ -4,7 +4,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 //Middleware
-
 const cors = require("cors");
 const morgan = require("morgan");
 
@@ -16,6 +15,7 @@ import path from "path";
 
 const client = path.join(__dirname, "../client/build");
 
+//Initialise static route
 app.use(express.static(client));
 
 //Initialise middleware
@@ -37,7 +37,6 @@ app.use("*", routeError);
 
 // Log server listening
 app.listen(port, () => {
-  // eslint-disable-next-line no-console
   console.log(`Server listening on port ${port}...`);
 });
 

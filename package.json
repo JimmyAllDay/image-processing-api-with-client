@@ -19,7 +19,8 @@
   },
   "scripts": {
     "postinstall": "tsc",
-    "start": "node build/server.js"
+    "start": "node build/server.js",
+    "nodemon": "nodemon server.ts"
   },
   "eslintConfig": {},
   "browserslist": {
