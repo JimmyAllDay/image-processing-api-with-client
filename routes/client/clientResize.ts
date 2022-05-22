@@ -27,6 +27,7 @@ const upload = multer({
   storage: fileStorage,
 });
 //TODO: Error handling has not been addressed for the below
+
 routes.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const heightString = req.body.height;
   const widthString = req.body.width;
@@ -34,27 +35,23 @@ routes.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const width = Number(widthString);
   const name = req.file?.originalname;
   const imageDir = path.join(__dirname, "../../../clientResize");
+  //! Dev imageDir:
+  //! const imageDir = path.join(__dirname, "../../clientResize");
   fse.ensureDirSync(imageDir);
   const imagePath = path.join(imageDir, `${name}`);
   const nameNoExt = getNameNoExt(req.file?.originalname);
   const format = getFileType(name);
   const output = path.join(
-    __dirname,
     imageDir,
     `${nameNoExt}_${heightString}_${widthString}${format}`
   );
   await resize(imagePath, width, height, output, res);
   res.sendFile(output, (err: Error) => {
-    if (err) {
-      res.send(err.message);
-      return;
-    } else {
-      try {
-        fs.unlink(output);
-        fs.unlink(imagePath);
-      } catch (err) {
-        throw new Error();
-      }
+    try {
+      fs.unlink(output);
+      fs.unlink(imagePath);
+    } catch (err) {
+      throw new Error();
     }
   });
 });
