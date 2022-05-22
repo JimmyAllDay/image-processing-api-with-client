@@ -13,8 +13,9 @@ import clientResize from "./routes/client/clientResize";
 import routeError from "./routes/api/index";
 import path from "path";
 
-// const client = path.join(__dirname, "../client/build");
-const client = path.join(__dirname, "./client/build");
+const client = path.join(__dirname, "../client/build");
+//! dev client path - used to resolve deploy errors
+//! const client = path.join(__dirname, "./client/build");
 
 //Initialise static route
 app.use(express.static(client));
