@@ -12,12 +12,16 @@ function Navigation() {
       }}
     >
       <Container>
-        <Navbar.Brand className="text-white d-none d-sm-flex">
-          Image Processing API
-        </Navbar.Brand>
-        <Navbar.Brand className="text-white d-flex d-sm-none">
-          Image API
-        </Navbar.Brand>
+        <LinkContainer to="/">
+          <Navbar.Brand className="text-white d-none d-sm-flex" style={{ cursor: "pointer" }}>
+            Image Processing API
+          </Navbar.Brand>
+        </LinkContainer>
+        <LinkContainer to="/">
+          <Navbar.Brand className="text-white d-flex d-sm-none" style={{ cursor: "pointer" }}>
+            Image API
+          </Navbar.Brand>
+        </LinkContainer>
         <Col xs={7} sm={5} lg={3} className="ms-auto ms-sm-5 me-sm-auto">
           <Nav className="me-auto text-light w-100 d-flex justify-content-between">
             <LinkContainer to="/">

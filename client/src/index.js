@@ -4,9 +4,12 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./Components/App";
 import reportWebVitals from "./reportWebVitals";
 
+// Use PUBLIC_URL for basename (will be set during GitHub Pages deployment)
+const basename = process.env.PUBLIC_URL || '/';
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </React.StrictMode>,

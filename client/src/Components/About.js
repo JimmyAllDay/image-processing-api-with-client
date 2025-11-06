@@ -3,6 +3,8 @@ import React from "react";
 import { Container } from "react-bootstrap";
 
 export default function About() {
+  const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  
   return (
     <Container>
       <br />
@@ -27,7 +29,7 @@ export default function About() {
         <br />
         The URL should have the format: <br />
         <br />
-        'https://jimmyallday-image-api.herokuapp.com/api?name=<b>imagename</b>
+        '{apiUrl}/api?name=<b>imagename</b>
         &width=<b>number</b>
         &height=<b>number</b>'
         <br />
@@ -37,13 +39,13 @@ export default function About() {
         in another tab in your browser:
         <br />
         <br />
-        https://jimmyallday-image-api.herokuapp.com/api?name=encenadaport&width=600&height=600
+        {apiUrl}/api?name=encenadaport&width=600&height=600
         <br />
         <br />
-        https://jimmyallday-image-api.herokuapp.com/api?name=fjord&width=800&height=400
+        {apiUrl}/api?name=fjord&width=800&height=400
         <br />
         <br />
-        https://jimmyallday-image-api.herokuapp.com/api?name=palmtunnel&width=1000&height=1000
+        {apiUrl}/api?name=palmtunnel&width=1000&height=1000
         <br />
         <br />
         If you want to try a unique URL, the available image names are: fjord,

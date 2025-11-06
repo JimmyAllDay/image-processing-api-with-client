@@ -12,6 +12,16 @@
 
 # production
 /build
+/server/build
+/client/build
+
+# temporary image processing directories
+/server/thumb
+/server/clientResize
+
+# environment variables
+.env
+!.env.example
 
 # misc
 .DS_Store

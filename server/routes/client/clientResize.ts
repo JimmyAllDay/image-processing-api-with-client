@@ -32,12 +32,13 @@ routes.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const height = Number(heightString);
   const width = Number(widthString);
   const name = req.file?.originalname;
-  const imagePath = path.join(__dirname, "../../clientResize", `${name}`);
+  const serverRoot = process.cwd();
+  const imagePath = path.join(serverRoot, "clientResize", `${name}`);
   const nameNoExt = getNameNoExt(req.file?.originalname);
   const format = getFileType(name);
   const output = path.join(
-    __dirname,
-    "../../clientResize",
+    serverRoot,
+    "clientResize",
     `${nameNoExt}_${heightString}_${widthString}${format}`
   );
   await resize(imagePath, width, height, output, res);

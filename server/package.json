@@ -18,9 +18,9 @@
   },
   "scripts": {
     "start": "node build/server.js",
-    "build": "react-scripts build",
-    "postinstall": "tsc",
-    "heroku-postbuild": "cd client && npm install && npm run build && cd .. && mkdir ./build/client && mv ./client/build ./build/client"
+    "build": "tsc",
+    "dev": "nodemon --exec ts-node server.ts",
+    "dev:compiled": "tsc && node build/server.js"
   },
   "eslintConfig": {},
   "browserslist": {

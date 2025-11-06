@@ -41,7 +41,7 @@ function App() {
             const image = URL.createObjectURL(res.data);
             setUserImages([...userImages, image]);
             setLoading(false);
-            statusMessage("Image ready");
+            statusMessage("Image ready. Check images tab.");
           })
           .catch((err) => {
             setLoading(false);

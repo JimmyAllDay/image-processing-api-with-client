@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://jimmyallday-image-api.herokuapp.com/",
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:3000/",
 });

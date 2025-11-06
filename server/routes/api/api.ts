@@ -57,23 +57,24 @@ routes.get("/", async (req: Request, res: Response) => {
   // }
 
   // Save directory path
-  const dirPath = path.join(__dirname, "../../thumb");
+  const serverRoot = process.cwd();
+  const dirPath = path.join(serverRoot, "thumb");
 
-  // try {
-  //   //Check that save directory exists
-  //   await checkSaveDir(dirPath);
-  // } catch (err: any) {
-  //   res.send(`An error has occured: ${err.message}`);
-  //   return;
-  // }
+  try {
+    //Check that save directory exists
+    await checkSaveDir(dirPath);
+  } catch (err: any) {
+    res.send(`An error has occured: ${err.message}`);
+    return;
+  }
 
   // Get path to image in images folder
-  const localImage = path.join(__dirname, "../../images", `${imageName}.jpg`);
+  const localImage = path.join(serverRoot, "images", `${imageName}.jpg`);
 
   // Get path to image in thumb folder
   const output = path.join(
-    __dirname,
-    "../../thumb",
+    serverRoot,
+    "thumb",
     `${imageName}_${width}_${height}.jpg`
   );
 

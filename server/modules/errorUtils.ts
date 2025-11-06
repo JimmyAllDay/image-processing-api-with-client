@@ -64,8 +64,8 @@ async function checkInts(width: number, height: number, res: Response) {
 }
 
 async function checkSaveDir(dirPath: string) {
-  if (!dirPath) {
-    await fsPromises.mkdir(dirPath);
+  if (!fs.existsSync(dirPath)) {
+    await fsPromises.mkdir(dirPath, { recursive: true });
   }
 }
 

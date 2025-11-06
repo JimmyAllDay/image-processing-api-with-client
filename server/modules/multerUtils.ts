@@ -1,5 +1,6 @@
 const multer = require("multer");
 import { FileFilterCallback } from "multer";
+const path = require("path");
 
 type DestinationCallback = (error: Error | null, destination: string) => void;
 type FileNameCallback = (error: Error | null, filename: string) => void;
@@ -11,7 +12,7 @@ const fileStorage = multer.diskStorage({
     file: Express.Multer.File,
     callback: DestinationCallback
   ): void => {
-    callback(null, "clientResize/");
+    callback(null, path.join(process.cwd(), "clientResize"));
   },
   //Set Multer save file name
   filename: (
