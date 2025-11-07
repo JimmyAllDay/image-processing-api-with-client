@@ -59,6 +59,9 @@ app.use("/api", apiLimiter, apiRoute);
 // Return image to client
 app.use("/sendImage", uploadLimiter, clientResize);
 
+// Health check endpoint (no rate limiting for this)
+app.use("/health", routeError);
+
 //Global route matcher
 app.use("*", routeError);
 

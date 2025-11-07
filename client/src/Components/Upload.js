@@ -9,7 +9,7 @@ import { Container, Row, Col, Form, Spinner, Button } from "react-bootstrap";
 import { HiArrowCircleRight } from "react-icons/hi";
 
 export default function Upload(props) {
-  const { formSubmit, userMessage, loading } = props;
+  const { formSubmit, userMessage, loading, serverStatus } = props;
 
   const [file, setFile] = useState("");
   const ref = React.useRef();
@@ -67,7 +67,7 @@ export default function Upload(props) {
                   className="w-100 mt-3"
                   variant="primary"
                   type="submit"
-                  disabled={!height || !width || !file ? true : false}
+                  disabled={!height || !width || !file || serverStatus !== "ready"}
                   onClick={(e) => {
                     formSubmit(e, file, width, height);
                     setHeight("");
