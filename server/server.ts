@@ -7,6 +7,7 @@ const port = process.env.PORT || 5000;
 
 const cors = require("cors");
 const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
 
 //Routes
 import apiRoute from "./routes/api/api";
@@ -35,11 +36,28 @@ app.use(cors({
   credentials: true
 }), morgan("dev"));
 
+// Rate limiting for API endpoints
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // limit each IP to 50 requests per windowMs
+  message: 'Too many API requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // limit each IP to 20 uploads per windowMs
+  message: 'Too many upload requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 //API
-app.use("/api", apiRoute);
+app.use("/api", apiLimiter, apiRoute);
 
 // Return image to client
-app.use("/sendImage", clientResize);
+app.use("/sendImage", uploadLimiter, clientResize);
 
 //Global route matcher
 app.use("*", routeError);

@@ -22,6 +22,7 @@
 # environment variables
 .env
 !.env.example
+/client/.env.production
 
 # misc
 .DS_Store

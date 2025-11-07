@@ -10,8 +10,8 @@ export default function About() {
       <br />
       <h2>Image Processing API</h2>
       <p>
-        This project is a simple image processing application. Its intention is
-        to provide a means to access images through an api, and to resize images
+        This project is a simple image processing application. It is intended to
+        to provide placeholder images through an api, and provide a meansto resize images
         uploaded from your browser. The project is built using Node, React,
         Typescript, and various modules and packages. Among them is Sharp.js.
         <br />

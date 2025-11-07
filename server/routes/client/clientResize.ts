@@ -31,6 +31,25 @@ routes.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const widthString = req.body.width;
   const height = Number(heightString);
   const width = Number(widthString);
+  
+  // Maximum dimension limit to prevent resource exhaustion
+  const MAX_DIMENSION = 3000;
+  
+  if (!width || !height || isNaN(width) || isNaN(height)) {
+    res.status(400).send('Width and height must be valid numbers');
+    return;
+  }
+
+  if (width < 1 || height < 1) {
+    res.status(400).send('Width and height must be at least 1 pixel');
+    return;
+  }
+
+  if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+    res.status(400).send(`Width and height must not exceed ${MAX_DIMENSION} pixels`);
+    return;
+  }
+
   const name = req.file?.originalname;
   const serverRoot = process.cwd();
   const imagePath = path.join(serverRoot, "clientResize", `${name}`);
