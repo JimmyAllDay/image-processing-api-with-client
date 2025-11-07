@@ -31,8 +31,29 @@ if (!fs.existsSync(clientResizeDir)) {
 }
 
 //Initialise middleware
+// Allow requests from GitHub Pages and localhost
+const allowedOrigins = [
+  'https://jimmyallday.github.io',
+  'http://localhost:3000',
+  'http://localhost:5000'
+];
+
+// Add CLIENT_URL from environment if it exists
+if (process.env.CLIENT_URL) {
+  allowedOrigins.push(process.env.CLIENT_URL);
+}
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }), morgan("dev"));
 
